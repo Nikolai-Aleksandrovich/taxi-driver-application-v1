@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Compass for user</title>
+</head>
+<body>
+<h1>dear user, please register here for more service</h1>
+<img th:src="@{/images/taxi.jpg}"/>
+<form method="post" th:action="@{/userRegister}"id="userRegistrationForm">
+    <label for="username">Username:</label>
+    <input type="text" name="username"/><br/>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password"/><br/>
+
+    <label for="confirm">Confirm password:</label>
+    <input type="password" name="confirm"/><br/>
+
+    <label for="fullname">Full name:</label>
+    <input type="text" name="fullname"/><br/>
+
+    <label for="street">Street:</label>
+    <input type="text" name="street"/><br/>
+
+    <label for="city">City:</label>
+    <input type="text" name="city"/><br/>
+
+    <label for="province">State:</label>
+    <input type="text" name="province"/><br/>
+
+    <label for="phonenumber">Phone:</label>
+    <input type="text" name="phonenumber"/><br/>
+
+    <label for="latitude">Phone:</label>
+    <input type="text" name="latitude"/><br/>
+
+    <label for="longitude">Phone:</label>
+    <input type="text" name="longitude"/><br/>
+
+    <input type="submit" value="Register"/>
+</form>
+
+</body>
+</html>
