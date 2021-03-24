@@ -8,4 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  * @create 2021-03-19 18:00
  */
 public interface BossRepository extends CrudRepository<Boss,Long> {
+    Boss findBossByBossName(String name);
 }
