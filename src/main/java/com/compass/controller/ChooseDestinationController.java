@@ -62,10 +62,12 @@ public class ChooseDestinationController {
     }
     @PostMapping
     public String processDestDesign(@Valid Destination design, Errors errors,@ModelAttribute Order order){
-        if(errors.hasErrors()){
+        if(errors.hasErrors()){//先判断是否存在输入错误
             return "/design";
         }
-        Destination saved = destinationRepository.save(design);
+        Destination saved = destinationRepository.save(design);//若无错误，储存设计好的信息到数据库
+        order.addDesign(design);
+        return "redirect:/orders/current";
     }
 
     /**
