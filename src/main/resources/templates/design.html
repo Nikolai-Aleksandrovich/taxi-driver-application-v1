@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+<meta charset="UTF-8">
+    <title>Compass</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+  </head>
+
+  <body>
+    <h1>Design your destination!</h1>
+    <h2>Where you want to go, <span th:text="${user.fullname}">NAME</span>?</h2>
+    <img th:src="@{/images/taxi.jpg}"/>
+    
+    <form method="POST" th:action="@{/logout}" id="logoutForm">
+      <input type="submit" value="Logout"/>
+    </form>
+
+    <form method="POST" th:object="${taco}" th:action="@{/design}" id="tacoForm">
+    
+    <span class="validationError"
+          th:if="${#fields.hasErrors('ingredients')}"
+          th:errors="*{ingredients}">Ingredient Error</span>
+          
+    <div class="grid">
+      <div class="CarParameter-group" id="wraps">
+      <h3>Choose taxi logo you want:</h3>
+      <div th:each="car : ${logo}">
+        <input name="cars" type="checkbox" th:value="${car.id}"/>
+        <span th:text="${car.name}">CarLogo</span><br/>
+      </div>
+      </div>
+
+      <div class="ingredient-group" id="proteins">
+      <h3>Pick SeatType you want:</h3>
+      <div th:each="car : ${seatType}">
+        <input name="cars" type="checkbox" th:value="${car.id}"/>
+        <span th:text="${car.name}">SeatType</span><br/>
+      </div>
+      </div>
+
+      <div class="ingredient-group" id="cheeses">
+      <h3>Choose Car Structure you want:</h3>
+      <div th:each="car : ${cheese}">
+        <input name="cars" type="checkbox" th:value="${car.id}"/>
+        <span th:text="${car.name}">StructureType</span><br/>
+      </div>
+      </div>
+
+      <h3>Name your trip:</h3>
+      <input type="text" th:field="*{name}"/>
+      <span th:text="${#fields.hasErrors('name')}">XXX</span>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('name')}"
+            th:errors="*{name}">Name Error</span>
+      <br/>
+
+      <button>Submit your car order</button>
+      </div>
+    </form>
+  </body>
+</html>
