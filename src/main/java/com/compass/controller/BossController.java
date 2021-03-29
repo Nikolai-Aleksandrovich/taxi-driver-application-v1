@@ -30,6 +30,10 @@ import java.util.Optional;
 @RequestMapping("/boss")
 @SessionAttributes("driver")
 public class BossController {
+    @ModelAttribute("driver")
+    public Driver driver(){
+        return new Driver();
+    }
 
     private BossRepository bossRepository;
     private DriverIncomeRepository driverIncomeRepository;
@@ -45,8 +49,8 @@ public class BossController {
 
     @GetMapping("/Top3Employee")
     public String topEmployeeForm(Model model){
-        PageRequest pageRequest = PageRequest.of(0,3, Sort.by("income").descending());
-        driverRepository.findAll(pageRequest)
+            PageRequest pageRequest = PageRequest.of(0,3,Sort.by("income").descending());
+            driverRepository.findAll(pageRequest)
 
         return "top3Employee";
     }

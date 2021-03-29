@@ -30,7 +30,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/current")
+    @GetMapping
     public String orderForm(@AuthenticationPrincipal User user, @ModelAttribute Order order){
 
         if(order.getName()==null){
