@@ -2,10 +2,8 @@ package com.compass.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author Yuyuan Huang
@@ -13,7 +11,7 @@ import javax.persistence.Id;
  */
 @Data
 @RequiredArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE,force = true)
+@NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
 @Entity
 public class Car {
     @Id
@@ -24,9 +22,17 @@ public class Car {
     private final String ownerName;
     private final String driverName;
     public final CarParameter carParameter;
+    private final String createdBy;
 
     public enum CarParameter{
         LOGO,SEATTYPE,STRUCTURETYPE
+    }
+
+
+    private Date createdAt;
+    @PrePersist
+    void createdAt(){
+        this.createdAt = new Date();
     }
 //    private final LogoType carBrand;
 //
