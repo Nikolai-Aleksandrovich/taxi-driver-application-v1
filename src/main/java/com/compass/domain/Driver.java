@@ -17,14 +17,16 @@ import java.util.Collection;
  * @create 2021-03-19 23:07
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE,force = true)
+@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
 @Entity
 public class Driver implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    private String accountStatus;
+    private long bossId;
 
     private final String driverName;
     private final String passWord;
@@ -40,31 +42,31 @@ public class Driver implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return passWord;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return driverName;
     }
 
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
