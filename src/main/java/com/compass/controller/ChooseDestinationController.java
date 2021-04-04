@@ -30,14 +30,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/design")
 @SessionAttributes(names = "order")//名为order的模型可以保存在session中，跨请求使用
 public class ChooseDestinationController {
+
     @ModelAttribute(name = "order")
     public Order order(){
         return new Order();
     }
+
     @ModelAttribute(name = "destination")
     public Destination destination(){
         return new Destination();
     }
+
     private DestinationRepository destinationRepository;
     private CarRepository carRepository;
     private UserRepository userRepository;
