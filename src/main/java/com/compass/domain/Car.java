@@ -3,43 +3,47 @@ package com.compass.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
  * @author Yuyuan Huang
  * @create 2021-03-18 9:43
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
 @Entity
-public class Car {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class Car extends BaseEntity {
 
+    @NotBlank
     private final String plateNumber;
-    private final String ownerName;
+    @NotNull
+    private final Long bossId;
+    @NotBlank
     private final String driverName;
+    @NotNull
     public final CarParameter carParameter;
-    private final String createdBy;
+//    @NotBlank
+//    private String createdBy;
 
     public enum CarParameter{
         LOGO,SEATTYPE,STRUCTURETYPE
     }
 
-
-    private Date createdAt;
-    @PrePersist
-    void createdAt(){
-        this.createdAt = new Date();
-    }
+//    @NotBlank
+//    private Date createdAt;
+//    @PrePersist
+//    void createdAt(){
+//        this.createdAt = new Date();
+//    }
 //    private final LogoType carBrand;
 //
 //    private enum LogoType{
 //        ORDINARY,MIDDLE_CLASS,LUXURY
 ////        TESLA,FORD,CADILLAC,JEEP,BUICK,LINCOLN,DODGE,CHEVROLET,CHRYSLER,GMC,TOYOTA,LEXUS,HONDA,ACURA,NISSAN,INFINITI,SUBARU,MAZDA,SUZUKI,MITSUBISHI
-//    }
 //
 //
 //    private final StructureType carType;
