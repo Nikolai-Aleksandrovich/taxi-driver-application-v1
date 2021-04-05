@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * @author Yuyuan Huang
@@ -30,12 +31,14 @@ public class Boss implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     //数据库自动生成Id
-    private long bossId;
+    private UUID bossId;
     private final String bossName;
     private final String passWord;
     private final String bossLicense;
 
     private final String carCounts;
+
+
 //    private final String carPlateNumber;
 
     private final String employeesCounts;
