@@ -3,14 +3,13 @@ package com.compass.controller;
 import com.compass.domain.Boss;
 import com.compass.domain.Car;
 import com.compass.domain.Driver;
-import com.compass.repository.BossRepository;
-import com.compass.repository.CarRepository;
-import com.compass.repository.DriverIncomeRepository;
-import com.compass.repository.DriverRepository;
+import com.compass.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -19,10 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Yuyuan Huang
@@ -31,12 +27,14 @@ import java.util.Optional;
 @Controller
 @Slf4j
 @RequestMapping("/boss")
+@SessionAttributes(names = {"car","changeDriver"})
 
 public class BossController {
-    @ModelAttribute(value = "car")
+    @ModelAttribute(name = "car")
     public Car car(){
         return new Car();
     }
+    @ModelAttribute(name = "changeDriver")
     public Driver driver(){
         return new Driver();
     }
@@ -45,14 +43,16 @@ public class BossController {
     private DriverIncomeRepository driverIncomeRepository;
     private DriverRepository driverRepository;
     private CarRepository carRepository;
+    private DriverPagingRepository driverPagingRepository;
 
 
     @Autowired
-    public BossController(BossRepository bossRepository,DriverRepository driverRepository,DriverIncomeRepository driverIncomeRepository,CarRepository carRepository){
+    public BossController(DriverPagingRepository driverPagingRepository,BossRepository bossRepository,DriverRepository driverRepository,DriverIncomeRepository driverIncomeRepository,CarRepository carRepository){
         this.bossRepository=bossRepository;
         this.carRepository = carRepository;
         this.driverRepository=driverRepository;
         this.driverIncomeRepository = driverIncomeRepository;
+        this.driverPagingRepository = driverPagingRepository;
     }
 
     @GetMapping(value = {"/myDriver","/selectMyDriver"})
@@ -64,36 +64,61 @@ public class BossController {
         return "myDriver";
     }
 
+    @GetMapping("/allMyCar")
+    public String allCar(@AuthenticationPrincipal Boss boss,Model model){
+        List<Car> carList = new ArrayList<>(carRepository.findAllByBossId(boss.getBossId()));
+        model.addAllAttributes(carList);
+        return "allMyCar";
+
+    }
+
+
+    @GetMapping("/addCar")
+    public String carForm(@AuthenticationPrincipal Boss boss,@ModelAttribute("car") Car car){
+        if(car.getCreatedBy()==null){
+            car.setCreatedBy(boss.getBossName());
+        }
+        return "inputCarDetails";
+    }
 
     @GetMapping("/Top3Employee")
     public String topEmployeeForm(Model model){
         //查询全服最好的三个司机
-        PageRequest pageRequest = PageRequest.of(0,3,Sort.by("income").descending());
-        List<List<Object>> list = new ArrayList<>();
-        list = driverRepository.findIdAndNameOrderByIncomeAtDesc();
-        model.addAllAttributes(list);
+        Page<Driver> drivers  = driverPagingRepository.findAll(PageRequest.of(0,3,Sort.by("income").descending()));
+        model.addAttribute(drivers.getContent());
         return "top3Employee";
     }
 
     @GetMapping("/myBestEmployee")
     public String bestEmployee(@AuthenticationPrincipal Boss boss,Model model){
         //查询我最好的司机
-        List<Long> idList = new ArrayList<>();
+        List<Long> idList;
         idList = driverIncomeRepository.findIdByBossIdOrderByIncome(boss.getBossId());
         Optional<Driver> driver = driverRepository.findById(idList.get(0));
         if(driver.isPresent()){
             model.addAttribute("name",driver.get().getDriverName());
             model.addAttribute("id",driver.get().getId());
             model.addAttribute("carPlate",driver.get().getCarPlate());
+            model.addAttribute("carId",carRepository.findIdByPlateNumber(driver.get().getCarPlate()));
         }else {
             model.addAttribute("name","you don't hire any driver yet");
             model.addAttribute("id","null");
             model.addAttribute("carPlate","null");
+            model.addAttribute("carId","null");
         }
         return "bestDriver";
     }
 
+    @GetMapping("allMyDriver/changeDriverInfo/{id}")
+    public String changeDriverInfo(@PathVariable("id")Long id,@AuthenticationPrincipal Boss boss,Model model){
+        Optional<Driver> optionalDriver = driverRepository.findDriverByIdAndBossId(id,boss.getBossId());
+        if (optionalDriver.isPresent()){
+            model.addAttribute("changeDriver",optionalDriver.get());
+            return "setNewDriverInfo";
+        }
+            throw new UsernameNotFoundException("Id '" + id + "'is not exist");
 
+    }
 
     @GetMapping("/selectMyDriver/{id}")
     public String driverForm(@PathVariable(name = "id") Long id,@AuthenticationPrincipal Boss boss,Model model){
@@ -112,7 +137,7 @@ public class BossController {
     @PostMapping("/fireDriver/{id}")
     public String fireDriver(@PathVariable("id")Long id){
         driverRepository.deleteById(id);
-        return "myDriver";
+        return "redirect:/myDriver";
     }
 
 
@@ -129,17 +154,30 @@ public class BossController {
         }else {throw new UsernameNotFoundException(
                 "Driver'" + id + "'is Not Exist"
         );}
-        return "myDriver";
+        return "redirect:/myDriver";
 
     }
 
-    @PostMapping("/addCar")
+
+    @PostMapping("allMyDriver/changeDriverInfo/{id}")
+    public String changeDriver(@PathVariable("id")Long id,@AuthenticationPrincipal Boss boss,@ModelAttribute("changeDriver")Driver driver,Model model){
+        driverRepository.
+
+    }
+
+    @PostMapping("/allMyCar/addCar")
     public Car processCar(@Valid Car car,@AuthenticationPrincipal Boss boss){
         carRepository.save(car);
         Optional<Car> tempCar = carRepository.findById(car.getId());
         if (tempCar.isPresent()){
-            tempCar.get().
-        }
+            carRepository.updateCreatedByById(boss.getBossName(),car.getId());
+        }else {throw new  UsernameNotFoundException("Car is Not Exist");}
+
+        return carRepository.findById(car.getId()).get();
 
     }
+
+    @PostMapping("/allMyCar/deleteCar")
+    public
+
 }
