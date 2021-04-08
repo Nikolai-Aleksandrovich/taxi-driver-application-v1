@@ -26,7 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE,force = true)
 @Entity
-public class Boss implements UserDetails {
+public class Boss extends Auditable<Boss> implements UserDetails {
     private static final long serialVersionUID = 2L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
