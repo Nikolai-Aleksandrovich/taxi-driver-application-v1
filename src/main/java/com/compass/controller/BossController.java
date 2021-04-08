@@ -160,24 +160,24 @@ public class BossController {
 
 
     @PostMapping("allMyDriver/changeDriverInfo/{id}")
-    public String changeDriver(@PathVariable("id")Long id,@AuthenticationPrincipal Boss boss,@ModelAttribute("changeDriver")Driver driver,Model model){
-        driverRepository.
+    public String changeDriver(@PathVariable("id")Long id,@ModelAttribute("changeDriver")Driver driver){
+        driverRepository.save(driver);
+        return "redirect:/allMyDriver";
 
     }
 
     @PostMapping("/allMyCar/addCar")
     public Car processCar(@Valid Car car,@AuthenticationPrincipal Boss boss){
         carRepository.save(car);
-        Optional<Car> tempCar = carRepository.findById(car.getId());
-        if (tempCar.isPresent()){
-            carRepository.updateCreatedByById(boss.getBossName(),car.getId());
-        }else {throw new  UsernameNotFoundException("Car is Not Exist");}
-
         return carRepository.findById(car.getId()).get();
 
     }
 
-    @PostMapping("/allMyCar/deleteCar")
-    public
+    @PostMapping("/allMyCar/deleteCar/{id}")
+    //根据Id删除数据库中的车辆
+    public String deleteCar(@PathVariable("id")Long id,@AuthenticationPrincipal Boss boss){
+        carRepository.deleteById(id);
+        return "redirect:/allMyCar";
+    }
 
 }
