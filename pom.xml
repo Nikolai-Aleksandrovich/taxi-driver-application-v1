@@ -22,6 +22,7 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+			<scope>test</scope>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
