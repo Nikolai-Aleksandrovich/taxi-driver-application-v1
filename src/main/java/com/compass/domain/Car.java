@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author Yuyuan Huang
@@ -16,12 +16,15 @@ import java.util.Date;
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
 @Entity
-public class Car extends BaseEntity {
+public class Car extends Auditable<Boss>{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @NotBlank
     private final String plateNumber;
     @NotNull
-    private final Long bossId;
+    private final UUID bossId;
     @NotBlank
     private final String driverName;
     @NotNull
