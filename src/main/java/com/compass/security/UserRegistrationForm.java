@@ -2,6 +2,7 @@ package com.compass.security;
 
 import com.compass.domain.User;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -15,6 +16,7 @@ public class UserRegistrationForm {
     private String passWord;
     private String fullName;
     private String street;
+    private String district;
     private String city;
     private String province;
     private String phoneNumber;
@@ -23,7 +25,7 @@ public class UserRegistrationForm {
 
     public User toUser(PasswordEncoder passwordEncoder){
         //转换输入到User类型
-        return new User(userName,passwordEncoder.encode(passWord),fullName,street,city,province,phoneNumber,latitude,longitude);
+        return new User(userName,passwordEncoder.encode(passWord),fullName,street,district,city,province,phoneNumber,latitude,longitude);
     }
 
 }

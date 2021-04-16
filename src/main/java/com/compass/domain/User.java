@@ -13,10 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * @author Yuyuan Huang
@@ -26,12 +23,12 @@ import java.util.HashSet;
 @NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
 @RequiredArgsConstructor
 @Entity
-public class User implements UserDetails {
+public class User extends Auditable<UserDetails> implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     //依赖数据库自动生成Id值
-    private Long id;
+    private UUID id;
     private final String userName;
     private final String passWord;
     private final String fullName;

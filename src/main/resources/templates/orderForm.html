@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+<meta charset="UTF-8">
+    <title>Compass</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+  </head>
+
+  <body>
+
+	<form method="POST" th:action="@{/logout}" id="logoutForm">
+      <input type="submit" value="Logout"/>
+    </form>
+
+    <form method="POST" th:action="@{/orders}" th:object="${order}" id="orderForm">
+      <h1>Please write your order information!</h1>
+
+      <img th:src="@{/images/taxi.jpg}"/>
+      <h3>Your trips in this order:</h3>
+      <a th:href="@{/design}" id="another">Call another car</a><br/>
+
+	  <ul>
+    	<li th:each="destination : ${order.destinations}">
+    	<span th:text="${destination.name}">trip name</span></li>
+  	  </ul>
+
+      <div th:if="${#fields.hasErrors()}">
+        <span class="validationError">
+        Please correct the problems below and resubmit.
+        </span>
+      </div>
+
+      <h3>Pick me up from...</h3>
+
+      <label for="startLocationName">Location Name: </label>
+      <input type="text" th:field="*{startLocationName}"/>
+      <span class="validationError"
+        th:if="${#fields.hasErrors('startLocationName')}"
+        th:errors="*{startLocationName}">Name Error</span>
+      <br/>
+
+      <label for="startRoad">Street address: </label>
+      <input type="text" th:field="*{startRoad}"/>
+      <span class="validationError"
+         th:if="${#fields.hasErrors('startRoad')}"
+         th:errors="*{startRoad}">Street Error</span>
+      <br/>
+
+      <label for="startDistrict">District: </label>
+      <input type="text" th:field="*{startDistrict}"/>
+      <span class="validationError"
+         th:if="${#fields.hasErrors('startDistrict')}"
+         th:errors="*{startDistrict}">District Error</span>
+      <br/>
+
+      <label for="startCity">City: </label>
+      <input type="text" th:field="*{startCity}"/>
+      <span class="validationError"
+          th:if="${#fields.hasErrors('startCity')}"
+          th:errors="*{startCity}">City Error</span>
+      <br/>
+
+      <label for="startProvince">Province: </label>
+      <input type="text" th:field="*{startProvince}"/>
+      <span class="validationError"
+         th:if="${#fields.hasErrors('startProvince')}"
+         th:errors="*{startProvince}">Province Error</span>
+      <br/>
+
+      <label for="startTime">Province: </label>
+      <input type="text" th:field="*{startTime}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('startTime')}"
+            th:errors="*{startTime}">Time Error</span>
+      <br/>
+
+      <label for="startLongitude">Longitude: </label>
+      <input type="text" th:field="*{startLongitude}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('startLongitude')}"
+            th:errors="*{startLongitude}">Longitude Error</span>
+      <br/>
+
+      <label for="startLatitude">Latitude: </label>
+      <input type="text" th:field="*{startLatitude}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('startLatitude')}"
+            th:errors="*{startLatitude}">Latitude Error</span>
+      <br/>
+
+      <h3>Drive me to ...</h3>
+
+      <label for="destLocationName">Location Name: </label>
+      <input type="text" th:field="*{destLocationName}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('destLocationName')}"
+            th:errors="*{destLocationName}">Name Error</span>
+      <br/>
+
+      <label for="destRoad">Street address: </label>
+      <input type="text" th:field="*{destRoad}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('destRoad')}"
+            th:errors="*{destRoad}">Street Error</span>
+      <br/>
+
+      <label for="destDistrict">District: </label>
+      <input type="text" th:field="*{destDistrict}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('destDistrict')}"
+            th:errors="*{destDistrict}">District Error</span>
+      <br/>
+
+      <label for="destCity">City: </label>
+      <input type="text" th:field="*{destCity}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('destCity')}"
+            th:errors="*{destCity}">City Error</span>
+      <br/>
+
+      <label for="destProvince">Province: </label>
+      <input type="text" th:field="*{destProvince}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('destProvince')}"
+            th:errors="*{destProvince}">Province Error</span>
+      <br/>
+
+      <label for="destTime">Province: </label>
+      <input type="text" th:field="*{destTime}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('destTime')}"
+            th:errors="*{destTime}">Time Error</span>
+      <br/>
+
+      <label for="destLongitude">Longitude: </label>
+      <input type="text" th:field="*{destLongitude}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('destLongitude')}"
+            th:errors="*{destLongitude}">Longitude Error</span>
+      <br/>
+
+      <label for="destLatitude">Latitude: </label>
+      <input type="text" th:field="*{destLatitude}"/>
+      <span class="validationError"
+            th:if="${#fields.hasErrors('destLatitude')}"
+            th:errors="*{destLatitude}">Latitude Error</span>
+      <br/>
+
+
+      <h3>Contact me with ...</h3>
+
+      <label for="name">My name: </label>
+      <input type="text" th:field="*{name}"/>
+      <span class="validationError"
+         th:if="${#fields.hasErrors('name')}"
+         th:errors="*{name}">Name Error</span>
+      <br/>
+
+      <label for="number">Phone Number: </label>
+      <input type="text" th:field="*{number}"/>
+      <span class="validationError"
+         th:if="${#fields.hasErrors('number')}"
+         th:errors="*{number}">CC Num Error</span>
+      <br/>
+
+      <input type="submit" value="Submit order"/>
+    </form>
+
+  </body>
+</html>

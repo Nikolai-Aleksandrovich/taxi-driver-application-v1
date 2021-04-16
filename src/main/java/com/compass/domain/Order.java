@@ -22,7 +22,7 @@ import java.util.List;
 //@NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
 @Entity
 @Table(name = "Taco_Order")
-public class Order implements Serializable {
+public class Order extends Auditable<User> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

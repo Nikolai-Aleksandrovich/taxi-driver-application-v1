@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * @author Yuyuan Huang
@@ -20,13 +21,13 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC,force = true)
 @Entity
-public class Driver implements UserDetails {
+public class Driver extends Auditable<UserDetails> implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private UUID id;
     private String accountStatus;
-    private long bossId;
+    private UUID bossId;
 
     private final String driverName;
     private final String passWord;

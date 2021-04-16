@@ -20,7 +20,7 @@ import java.util.List;
 //@NoArgsConstructor(access = AccessLevel.PRIVATE,force = true)
 //@Table(name = "Dest")
 @Entity
-public class Destination {
+public class Destination extends Auditable<User> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
